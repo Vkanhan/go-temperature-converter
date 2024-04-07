@@ -5,53 +5,46 @@ import (
 	"strings"
 )
 
+type Unit string
+
 const (
-	Celsius    = "C"
-	Kelvin     = "K"
-	Fahrenheit = "F"
+	Celsius    Unit = "C"
+	Kelvin     Unit = "K"
+	Fahrenheit Unit = "F"
 )
+
 
 func main() {
 	fmt.Println("Go temperature converter")
 
 	var temp float64
-	var fromUnit, toUnit string
+	var fromUnit, toUnit Unit
 
 	fmt.Print("Enter the current temperature: ")
 	fmt.Scan(&temp)
 
-	fmt.Print("Enter the current unit (C, K, F): ")
-	fmt.Scan(&fromUnit)
-	fromUnit = strings.ToUpper(fromUnit)
-
-	fmt.Print("Enter the unit to convert to (C, K, F): ")
-	fmt.Scan(&toUnit)
-	toUnit = strings.ToUpper(toUnit)
-
 	fromUnit = readValidTemperatureUnit("Enter the current unit (C, K, F): ")
 	toUnit = readValidTemperatureUnit("Enter the unit to convert to (C, K, F): ")
-
 
 	convertedTemp := convertTemp(temp, fromUnit, toUnit)
 
 	fmt.Printf("%.2f %s is %.2f %s\n", temp, fromUnit, convertedTemp, toUnit)
-
 }
 
-func readValidTemperatureUnit(prompt string) string {
+func readValidTemperatureUnit(prompt string) Unit {
 	var unit string
 	for {
 		fmt.Println(prompt)
 		fmt.Scanln(&unit)
 		unit = strings.ToUpper(unit)
-		if isValidTemperatureUnit(unit) {
-			return unit
+		if isValidTemperatureUnit(Unit(unit)) {
+			return Unit(unit)
 		}
 		fmt.Println("Invalid temperature unit. Please enter a valid unit (C, K, F).")
 	}
 }
 
-func isValidTemperatureUnit(unit string) bool {
+func isValidTemperatureUnit(unit Unit) bool {
 	switch unit {
 	case Celsius, Kelvin, Fahrenheit:
 		return true
@@ -60,7 +53,7 @@ func isValidTemperatureUnit(unit string) bool {
 	}
 }
 
-func convertTemp(temp float64, fromUnit, toUnit string) float64 {
+func convertTemp(temp float64, fromUnit, toUnit Unit) float64 {
 	switch {
 	case fromUnit == Celsius && toUnit == Kelvin:
 		return temp + 273.15
