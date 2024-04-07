@@ -22,33 +22,45 @@ func main() {
 	fmt.Scan(&toUnit)
 	toUnit = strings.ToUpper(toUnit)
 
-	convertedTemp := 0.0
+	convertedTemp := convertTemp(temp, fromUnit, toUnit)
+
+	fmt.Printf("%.2f %s is %.2f %s\n", temp, fromUnit, convertedTemp, toUnit)
+
+}
+
+func convertTemp(temp float64, fromUnit, toUnit string) float64 {
 
 	switch fromUnit{
 	case "C":
-		if toUnit == "F" {
-			convertedTemp = temp * 9/5 + 32 // celsius to farenheit
-		} else if toUnit == "K"{
-			convertedTemp = temp + 273.15 // celsius to kelvin
-		} else {
-			return 
+		switch toUnit {
+		case "F":
+			return temp*9/5 + 32
+		case "K":
+			return temp + 273.15
+		default:
+			return temp
 		}
 	case "F":
-		if toUnit == "C" {
-			convertedTemp = (temp - 32) * 5/9 // farenheit to celsius
-		} else if toUnit == "K"{
-			convertedTemp = (temp - 32) * 5/9 + 273.15 // fareheit to kelvin
-		} else {
-			return
+		switch toUnit {
+			case "C":
+			return (temp - 32) * 5 / 9
+		case "K":
+			return (temp-32)*5/9 + 273.15
+		default:
+			return temp
 		}
 	case "K":
-		if toUnit == "C"{
-			convertedTemp = temp - 273.15 //kelvin to celsius
-		} else if toUnit == "F" {
-			convertedTemp = (temp - 273.15) * 9/5 + 32 //kelvin to farenheit
-		} else {
-			return 
+		switch toUnit {
+		case "C":
+			return temp - 273.15
+		case "F":
+			return (temp-273.15)*9/5 + 32
+		default:
+			return temp
 		}
+	default:
+		return temp
 	}
-	fmt.Printf("Converted temperature: %v%s", convertedTemp, toUnit)
+	
 }
+
